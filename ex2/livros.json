@@ -1,0 +1,44 @@
+[
+    {
+        "titulo": "Ensaio sobre a Cegueira",
+        "autor": "Jose Saramago",
+        "paginas": 312,
+        "genero": "Romance",
+        "lido": true
+    },
+    {
+        "titulo": "O Nome da Rosa",
+        "autor": "Umberto Eco",
+        "paginas": 512,
+        "genero": "Historico",
+        "lido": false
+    },
+    {
+        "titulo": "A Metamorfose",
+        "autor": "Franz Kafka",
+        "paginas": 128,
+        "genero": "Novela",
+        "lido": true
+    },
+    {
+        "titulo": "1984",
+        "autor": "George Orwell",
+        "paginas": 328,
+        "genero": "Distopia",
+        "lido": false
+    },
+    {
+        "titulo": "O Estrangeiro",
+        "autor": "Albert Camus",
+        "paginas": 160,
+        "genero": "Ficcao",
+        "lido": false
+    },
+    {
+        "titulo": "Siddhartha",
+        "autor": "Hermann Hesse",
+        "paginas": 176,
+        "genero": "Filosofico",
+        "lido": true
+    }
+]
