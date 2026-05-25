@@ -71,17 +71,14 @@ app.post("/api/livros", async (req, res) => {
   }
 });
 
-// PUT /api/livros/:id (altera apenas estado lido)
+// PUT /api/livros/:id (troca automaticamente estado lido)
 app.put("/api/livros/:id", async (req, res) => {
   try {
-    const { lido } = req.body;
-    const updated = await Livro.findByIdAndUpdate(
-      req.params.id,
-      { lido: !!lido },
-      { new: true },
-    ).exec();
+    const livro = await Livro.findById(req.params.id).exec();
+    if (!livro) return res.status(404).json({ error: "Not found" });
 
-    if (!updated) return res.status(404).json({ error: "Not found" });
+    livro.lido = !livro.lido;
+    const updated = await livro.save();
     res.json(updated);
   } catch (err) {
     res.status(400).json({ error: "Invalid id or server error" });
