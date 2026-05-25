@@ -1,0 +1,25 @@
+// 1) Quantos jogos estao registados na base de dados?
+db.jogos.countDocuments()
+
+// 2) Quantos jogos pertencem a categoria "Family"?
+db.jogos.countDocuments({ category: "Family" })
+
+// 3) Lista de autores (ordenada alfabeticamente e sem repeticoes)
+db.jogos.aggregate([
+	{ $unwind: "$autores" },
+	{ $group: { _id: "$autores.name" } },
+	{ $sort: { _id: 1 } }
+])
+
+// 4) Distribuicao de jogos por ano de lancamento
+db.jogos.aggregate([
+	{ $group: { _id: "$year", total: { $sum: 1 } } },
+	{ $sort: { _id: 1 } }
+])
+
+// 5) Distribuicao de jogos por editora
+db.jogos.aggregate([
+	{ $unwind: "$editoras" },
+	{ $group: { _id: "$editoras.name", total: { $sum: 1 } } },
+	{ $sort: { total: -1, _id: 1 } }
+])

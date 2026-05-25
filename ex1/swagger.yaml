@@ -1,0 +1,251 @@
+openapi: 3.0.0
+info:
+  title: API de Jogos
+  description: API de dados para jogos de tabuleiro.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:17000
+    description: Servidor local
+
+components:
+  schemas:
+    Jogo:
+      type: object
+      properties:
+        _id:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        year:
+          type: integer
+        category:
+          type: string
+        minPlayers:
+          type: integer
+        maxPlayers:
+          type: integer
+        playingTimeMinutes:
+          type: integer
+        descriptionEN:
+          type: string
+        autores:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+        editoras:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              country:
+                type: string
+        mecanicas:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+        premios:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              year:
+                type: integer
+
+    JogoResumo:
+      type: object
+      properties:
+        _id:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        year:
+          type: integer
+        category:
+          type: string
+        minPlayers:
+          type: integer
+
+    JogoEditora:
+      type: object
+      properties:
+        _id:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        year:
+          type: integer
+
+    AutorItem:
+      type: object
+      properties:
+        autor:
+          type: string
+        jogos:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+
+    CategoriaItem:
+      type: object
+      properties:
+        categoria:
+          type: string
+        jogos:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+
+paths:
+  /jogos:
+    get:
+      summary: Lista todos os jogos
+      parameters:
+        - in: query
+          name: editora
+          schema:
+            type: string
+          description: Filtra por editora
+      responses:
+        "200":
+          description: Lista de jogos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/JogoResumo"
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/JogoEditora"
+    post:
+      summary: Cria um novo jogo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Jogo"
+      responses:
+        "201":
+          description: Jogo criado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Jogo"
+
+  /jogos/{id}:
+    get:
+      summary: Obtem um jogo por id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Jogo completo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Jogo"
+        "404":
+          description: Jogo nao encontrado
+    put:
+      summary: Atualiza um jogo por id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Jogo"
+      responses:
+        "200":
+          description: Jogo atualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Jogo"
+        "404":
+          description: Jogo nao encontrado
+    delete:
+      summary: Remove um jogo por id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Jogo removido
+        "404":
+          description: Jogo nao encontrado
+
+  /autores:
+    get:
+      summary: Lista autores sem repeticoes
+      responses:
+        "200":
+          description: Lista de autores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AutorItem"
+
+  /categorias:
+    get:
+      summary: Lista categorias sem repeticoes
+      responses:
+        "200":
+          description: Lista de categorias
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CategoriaItem"
